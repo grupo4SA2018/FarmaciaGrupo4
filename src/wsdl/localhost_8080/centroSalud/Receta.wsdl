@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ServiciosWeb/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Receta" targetNamespace="http://ServiciosWeb/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ServiciosWeb/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ServiciosWeb/">
+  <xs:element name="consultar_Receta" type="tns:consultar_Receta"/>
+  <xs:element name="consultar_RecetaResponse" type="tns:consultar_RecetaResponse"/>
+  <xs:element name="registro_Receta" type="tns:registro_Receta"/>
+  <xs:element name="registro_RecetaResponse" type="tns:registro_RecetaResponse"/>
+  <xs:complexType name="consultar_Receta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="idReceta" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="consultar_RecetaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registro_Receta">
+    <xs:sequence>
+      <xs:element name="idCita" type="xs:int"/>
+      <xs:element name="cantidad" type="xs:int"/>
+      <xs:element name="idMedicamento" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registro_RecetaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SQLException" type="tns:SQLException"/>
+  <xs:complexType name="SQLException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="errorCode" type="xs:int"/>
+      <xs:element minOccurs="0" name="sQLState" type="xs:string"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="consultar_RecetaResponse">
+    <wsdl:part element="tns:consultar_RecetaResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registro_Receta">
+    <wsdl:part element="tns:registro_Receta" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SQLException">
+    <wsdl:part element="tns:SQLException" name="SQLException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registro_RecetaResponse">
+    <wsdl:part element="tns:registro_RecetaResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultar_Receta">
+    <wsdl:part element="tns:consultar_Receta" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Receta">
+    <wsdl:operation name="consultar_Receta">
+      <wsdl:input message="tns:consultar_Receta" name="consultar_Receta">
+    </wsdl:input>
+      <wsdl:output message="tns:consultar_RecetaResponse" name="consultar_RecetaResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:SQLException" name="SQLException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="registro_Receta">
+      <wsdl:input message="tns:registro_Receta" name="registro_Receta">
+    </wsdl:input>
+      <wsdl:output message="tns:registro_RecetaResponse" name="registro_RecetaResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:SQLException" name="SQLException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RecetaSoapBinding" type="tns:Receta">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="consultar_Receta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultar_Receta">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultar_RecetaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SQLException">
+        <soap:fault name="SQLException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="registro_Receta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="registro_Receta">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="registro_RecetaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SQLException">
+        <soap:fault name="SQLException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Receta">
+    <wsdl:port binding="tns:RecetaSoapBinding" name="RecetaPort">
+      <soap:address location="http://localhost:8080/centroSalud/Receta"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
