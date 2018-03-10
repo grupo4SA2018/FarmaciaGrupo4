@@ -6,6 +6,7 @@
 package ServiciosWeb;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -29,13 +30,13 @@ public class RegistrarMedicamento {
      */
     @WebMethod(operationName = "RegistroMedicamento")
     public String RegistroMedicamento(@WebParam(name = "Nombre") String nombre
-            , @WebParam(name = "Descripcion") String descripcion,
-            @WebParam(name = "Fabricante") String fabricante
+            , @WebParam(name = "Descripcion") String descripcion
+            , @WebParam(name = "Fabricante") String fabricante
             , @WebParam(name = "Precio") float precio
-            , @WebParam(name = "Existencias") String existencias) throws SQLException {
+            , @WebParam(name = "Existencias") String existencias
+            , @WebParam(name = "Bajo_Prescripcion") int bajo) throws SQLException {
         Connection conn = null;
         Statement stmt = null;
-        String codigoFact="";
         try { 
            InitialContext ctx = new InitialContext(); 
            DataSource ds = (DataSource)ctx.lookup("java:/Farmacia");
@@ -46,14 +47,16 @@ public class RegistrarMedicamento {
             stmt = conn.createStatement();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             LocalDate localDate = LocalDate.now();    
-            String sql = "insert into medicamento(nombre, descripcion, fabricante, precio, existencias) "
-                    + "values ('" + nombre +  "', '" + descripcion + "', '" + fabricante  + "', " + precio + ", " + existencias + ")";
+            String sql = "insert into Medicamento(nombre, descripcion, fabricante,"
+                    + " precio, existencias,bajo_prescripcion) "
+                    + "values ('" + nombre +  "', '" + descripcion + "', '" + fabricante  
+                    + "', " + precio + ", " + existencias +","+ bajo + ")";
      
-            stmt.executeQuery(sql);
-            return "Exito";
+            stmt.execute(sql);
+            return "{\"exito\"}";
      } catch (SQLException | NamingException se) {
             //Handle errors for JDBC
-            return "Error we";
+            return "{\"error\"}";
         }
         //Handle errors for Class.forName
          finally {
@@ -65,6 +68,63 @@ public class RegistrarMedicamento {
                 conn.close();
             } //end finally try
         }
-
+    }
+    
+    @WebMethod(operationName = "consultar_Medicamento")
+    public String consultar_Medicamento(@WebParam(name = "idMed")String idMed) throws SQLException {
+        
+        String sql="";
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result;
+        
+        try {
+           InitialContext ctx = new InitialContext();
+           DataSource ds = (DataSource)ctx.lookup("java:/Farmacia");
+           conn =  ds.getConnection();
+            stmt = conn.createStatement();
+           
+            
+            sql = "select nombre, descripcion, fabricante, precio, existencias, bajo_prescripcion "
+                    + "from Medicamento Where idMedicamento = "+idMed;
+            result = stmt.executeQuery(sql);
+            if(result!= null){
+                while(result.next()){
+                    String nombre = result.getString("nombre");
+                    String fecha_nac = result.getString("descripcion");
+                    String Genero = result.getString("fabricante");
+                    String direccion = result.getString("precio");
+                    String telefono = result.getString("existencias");
+                    String estado = result.getString("bajo_prescripcion");                    
+                    return "{\n"
+                            +"\"nombre\": \""+nombre+"\",\n"
+                            +"\"descripcion\": \""+fecha_nac+"\",\n"
+                            +"\"fabricante\": \""+Genero+"\",\n"
+                            +"\"precio\": \""+direccion+"\",\n"
+                            +"\"existencias\": \""+telefono+"\",\n"
+                            +"\"bajo_prescripcion\": \""+estado+"\",\n"
+                            +"}";
+                }
+            }
+            else{
+                return "{\"error\"}";
+            }
+            
+            System.out.println(sql);
+            
+        } catch (NumberFormatException | SQLException | NamingException se) {
+            //Handle errors for JDBC
+            return ""+se;
+        }
+        finally {
+            //finally block used to close resources
+            if (stmt != null) {
+                conn.close();
+            } // do nothing
+            if (conn != null) {
+                conn.close();
+            } //end finally try
+        };
+        return "{\"error\"}";
     }
 }
