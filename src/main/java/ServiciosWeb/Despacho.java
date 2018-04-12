@@ -6,6 +6,7 @@
 package ServiciosWeb;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -16,9 +17,6 @@ import javax.jws.WebParam;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import consumir.Receta;
-import consumir.Receta_Service;
-import consumir.SQLException_Exception;
 
 
 /**
@@ -32,37 +30,35 @@ public class Despacho {
      * This is a sample web service operation
      */
     @WebMethod(operationName = "DespachoMed")
-    public String DespachoMed(@WebParam(name = "idReceta") String idReceta) throws SQLException_Exception, SQLException {
+    public String DespachoMed(@WebParam(name = "Meds") String meds) throws  SQLException {
+        boolean result = false;
+        String sql = "";
+        String sql1 = "";
         Connection conn = null;
+        ResultSet rs = null;
         Statement stmt = null;
+        String json="";
         try { 
-            Receta_Service cd  =  new Receta_Service();
-            final Receta pr = cd.getRecetaPort();
-            String rjson = pr.consultarReceta(idReceta);
             
-            InitialContext ctx = new InitialContext(); 
+            InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource)ctx.lookup("java:/Farmacia");
             conn =  ds.getConnection();
-            stmt = conn.createStatement();   
-            String sql = "";
+            stmt = conn.createStatement();
+           
+            sql = "select r.idReceta as id from Receta r inner join Cita c"
+                    + " on c.idCita = r.Cita where c.Realizada = 0 and c.Paciente ="+meds+";";
             
-            String[] parts = rjson.split(";");
-            int recursor = parts.length-2;
-            /*String[] partes = parts[recursor].split(",");
-            String n = partes[0];
-            String c = partes[1];
-            sql = "update Medicamento set Existencias = Existencias-"+c+" where Nombre = '"+n+"'";*/
-            
-            while(recursor>=0){
-                String[] partes = parts[recursor].split(",");
-                String n = partes[0];
-                String c = partes[1];
-                n = n.replace("\n", "");
-                
-                sql = "update Medicamento set Existencias = Existencias-"+c+" where Nombre = '"+n+"'";
-                stmt.execute (sql);
-                recursor--;
-            }                       
+            rs = stmt.executeQuery(sql);
+            result=true;    
+            if(rs != null){
+                while(rs.next()){
+                    json = rs.getString("id");
+                    return rs.getString("id");
+                }
+            }else{
+                return "{\"error\"}";
+            }            
+                               
             //stmt.execute(sql);
             
             return "{\"exito\"}";

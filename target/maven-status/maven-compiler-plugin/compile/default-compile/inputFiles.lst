@@ -1,14 +1,4 @@
 /home/gerson/NetBeansProjects/FarmaciaGrupo4/src/main/java/ServiciosWeb/ServiciosWebFarmacia.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/RegistroReceta.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/ConsultarRecetaResponse.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/Receta_Service.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/src/main/java/ServiciosWeb/RegistrarMedicamento.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/SQLException.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/Receta.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/package-info.java
 /home/gerson/NetBeansProjects/FarmaciaGrupo4/src/main/java/ServiciosWeb/RegFarma.java
 /home/gerson/NetBeansProjects/FarmaciaGrupo4/src/main/java/ServiciosWeb/Despacho.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/SQLException_Exception.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/ObjectFactory.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/RegistroRecetaResponse.java
-/home/gerson/NetBeansProjects/FarmaciaGrupo4/target/generated-sources/jaxws-wsimport/consumir/ConsultarReceta.java
+/home/gerson/NetBeansProjects/FarmaciaGrupo4/src/main/java/ServiciosWeb/RegistrarMedicamento.java
