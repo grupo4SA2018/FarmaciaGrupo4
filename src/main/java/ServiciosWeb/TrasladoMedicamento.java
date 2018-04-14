@@ -33,7 +33,7 @@ public class TrasladoMedicamento {
         Statement stmt = null;
         ResultSet result=null;
         boolean retorno = true;
-
+        String sql1 = "";
         try {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("java:/Farmacia");
@@ -43,7 +43,6 @@ public class TrasladoMedicamento {
             JSONObject obj = new JSONObject(meds);
             String destino = (String)obj.get("destino").toString();
             Iterator<?> keys = obj.keys();
-            int z = 0;
             java.util.Date fecha = new java.util.Date();
             String fechaA = fecha.getYear()+"-"+fecha.getMonth()+"-"+fecha.getDay();
             sql = "insert into Solicitud(Fecha, Destino, Origen) values('"+fechaA+"',"+destino.trim()+",4);";
@@ -66,15 +65,9 @@ public class TrasladoMedicamento {
                     String id = child.get("id").toString();
                     
                     sql = "update Medicamento set Existencias = Existencias -"+c.trim()+" where idMedicamento = "+id;
-                    stmt.execute(sql);
-                    
-                    sql = "insert into ListaMedicamentos(Medicamento, Solicitud, Cantidad) values("+id+","+idS+","+c+");";
-                    boolean st = stmt.execute(sql);
-                    if(st == false){
-                        return "{\"error\"}";
-                    }                                       
-                    
-                }else{
+                    stmt.execute(sql);                    
+                    sql1 = "insert into ListaMedicamentos(Medicamento, Solicitud, Cantidad) values("+id+","+idS+","+c+");";
+                    boolean st = stmt.execute(sql1);             
                     
                 }
             }
