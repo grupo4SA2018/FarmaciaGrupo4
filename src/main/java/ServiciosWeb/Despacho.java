@@ -72,7 +72,7 @@ public class Despacho {
                     String n = child.get("nombre").toString();
                     String c = child.get("cantidad").toString();
                     sql = "select idMedicamento, Precio from Medicamento where Nombre='"+n.trim()+"';";
-                    resul1 = st.executeQuery(sql);
+                    resul1 = st.executeQuery(sql);//Seleccionar id medicamento, Precio
                     String id = "";
                     int prec = 0;
                     if(resul1 != null){
