@@ -74,7 +74,7 @@ public class Despacho {
                     sql = "select idMedicamento, Precio from Medicamento where Nombre='"+n.trim()+"';";
                     resul1 = st.executeQuery(sql);//Seleccionar id medicamento, Precio
                     String id = "";//declaracion de ID
-                    int prec = 0;
+                    int prec = 0;//declaracion de variable para precio
                     if(resul1 != null){
                         while(resul1.next()){
                             id = resul1.getString("idMedicamento");
