@@ -138,15 +138,15 @@ public class RegistrarMedicamento {
             conn = ds.getConnection();
             stmt = conn.createStatement();
 
-            sql = "select nombre,cantidad idMed from Medicamento";
+            sql = "select Nombre,Existencias, idMedicamento from Medicamento";
             String json = "{\n";
             int inicio = 0;
             result = stmt.executeQuery(sql);
             if (result != null) {
                 while (result.next()) {
-                    String nombre = result.getString("nombre");
-                    String fecha_nac = result.getString("idMed");
-                    String cantidad = result.getString("cantidad");
+                    String nombre = result.getString("Nombre");
+                    String fecha_nac = result.getString("idMedicamento");
+                    String cantidad = result.getString("Existencias");
 
                     if (inicio == 0) {
                         json += "\"med_" + fecha_nac + "\":{\n";

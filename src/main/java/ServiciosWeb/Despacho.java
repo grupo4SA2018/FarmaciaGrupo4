@@ -32,8 +32,7 @@ public class Despacho {
      * This is a sample web service operation
      */
     @WebMethod(operationName = "DespachoMed")
-    public String DespachoMed(@WebParam(name = "Meds") String meds,
-            @WebParam(name = "Paciente") String Paciente) throws SQLException {
+    public String DespachoMed(@WebParam(name = "Meds") String meds) throws SQLException {
         String sql = "";
         Connection conn = null;
         ResultSet rs = null;
