@@ -2,4 +2,5 @@ ServiciosWeb/ServiciosWebFarmacia.class
 ServiciosWeb/TrasladoMedicamento.class
 ServiciosWeb/RegistrarMedicamento.class
 ServiciosWeb/Despacho.class
+ServiciosWeb/ConsultarExistencias.class
 ServiciosWeb/RegFarma.class

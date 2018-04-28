@@ -28,13 +28,79 @@ public class RegistrarMedicamento {
     /**
      * This is a sample web service operation
      */
+    @WebMethod(operationName = "Carga")
+    public String Carga(@WebParam(name = "Nombre") String nombre) throws SQLException {
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            InitialContext ctx = new InitialContext();
+            DataSource ds = (DataSource) ctx.lookup("java:/Farma");
+            System.out.println("Connecting to a selected database...");
+            conn = ds.getConnection();
+            System.out.println("Connected database successfully...");
+            System.out.println("Creating table in given database...");
+            stmt = conn.createStatement();
+            LocalDate localDate = LocalDate.now();
+            String line[] = nombre.split("\n");
+            String sql = "";
+            sql="insert into Medicamento(nombre, descripcion, fabricante,"
+                            + " precio, existencias,bajo_prescripcion, codigo) values";
+            for (int a = 0; a < line.length; a++) {
+                
+                    String[] array2 = line[a].split(",");
+                    //RegistrarMedicamento_Service rgs = new RegistrarMedicamento_Service();
+                    //RegistrarMedicamento rm = rgs.getRegistrarMedicamentoPort();
+                    //Nombre0,Descripcion1,Fabricante2,Precio3,Existencias4,Bajo_Prescripcion5,Codigo6
+                    
+                    if (array2.length == 7) {
+
+                        //rm.registroMedicamento(array2[1], array2[2], array2[5], Float.parseFloat(array2[6]), (array2[3]), Integer.parseInt(array2[4]), array2[0]);
+                        
+                        sql += "('" + array2[1] + "', '" + array2[2] + "', '" + array2[5]
+                            + "', " + Float.parseFloat(array2[6]) + ", " + array2[3] + "," + Integer.parseInt(array2[4]) + ",'" + array2[0] + "'),";
+                        
+                    } else {
+                        //rm.registroMedicamento(array2[1], array2[2], array2[6], Float.parseFloat(array2[7]), (array2[3].replace("\"", "") + array2[4].replace("\"", "")), Integer.parseInt(array2[5]), array2[0]);
+                        
+                        sql += "('" + array2[1] + "', '" + array2[2] + "', '" + array2[6]
+                            + "', " + Float.parseFloat(array2[7]) + ", " + (array2[3].replace("\"", "") + array2[4].replace("\"", "")) + "," + Integer.parseInt(array2[5]) + ",'" + array2[0] + "'),";
+                        
+                    }
+                    
+                    //verificar que el tamaño de array2 sea el adecuado
+
+                    //insertar result, que sería el nombre de cada medicamento
+                    // algo asi como insertarmedicamento(array2[0], array2[1], array2[2]);
+                
+            }
+            sql = sql.substring(0,sql.length()-1);
+            stmt.execute(sql);
+            System.out.println(sql);
+            return "{\"exito\"}";
+        } catch (SQLException | NamingException se) {
+            //Handle errors for JDBC
+            System.out.println(se.getMessage());
+            return "{\"error\"}";
+        } //Handle errors for Class.forName
+        finally {
+            //finally block used to close resources
+            if (stmt != null) {
+                conn.close();
+            } // do nothing
+            if (conn != null) {
+                conn.close();
+            } //end finally try
+        }
+    }
+
     @WebMethod(operationName = "RegistroMedicamento")
     public String RegistroMedicamento(@WebParam(name = "Nombre") String nombre,
-             @WebParam(name = "Descripcion") String descripcion,
-             @WebParam(name = "Fabricante") String fabricante,
-             @WebParam(name = "Precio") float precio,
-             @WebParam(name = "Existencias") String existencias,
-             @WebParam(name = "Bajo_Prescripcion") int bajo) throws SQLException {
+            @WebParam(name = "Descripcion") String descripcion,
+            @WebParam(name = "Fabricante") String fabricante,
+            @WebParam(name = "Precio") float precio,
+            @WebParam(name = "Existencias") String existencias,
+            @WebParam(name = "Bajo_Prescripcion") int bajo,
+            @WebParam(name = "Codigo") String codigo) throws SQLException {
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -48,9 +114,9 @@ public class RegistrarMedicamento {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             LocalDate localDate = LocalDate.now();
             String sql = "insert into Medicamento(nombre, descripcion, fabricante,"
-                    + " precio, existencias,bajo_prescripcion) "
+                    + " precio, existencias,bajo_prescripcion, codigo) "
                     + "values ('" + nombre + "', '" + descripcion + "', '" + fabricante
-                    + "', " + precio + ", " + existencias + "," + bajo + ")";
+                    + "', " + precio + ", " + existencias + "," + bajo + ",'" + codigo + "')";
 
             stmt.execute(sql);
             return "{\"exito\"}";
@@ -123,7 +189,7 @@ public class RegistrarMedicamento {
         };
         return "{\"error\"}";
     }
-    
+
     @WebMethod(operationName = "Medicamentos")
     public String Medicamentos() throws SQLException {
 
@@ -157,9 +223,9 @@ public class RegistrarMedicamento {
                     json += "\"nombre\":\"" + nombre + "\",";
                     json += "\"cantidad\":\"" + cantidad + "\",";
                     json += "\"id\":\"" + fecha_nac + "\"\n}\n";
-                    
+
                 }
-                json+="}";
+                json += "}";
                 return json;
             } else {
                 return "{\"error\"}";
@@ -178,5 +244,4 @@ public class RegistrarMedicamento {
         }
     }
 
-    
 }
