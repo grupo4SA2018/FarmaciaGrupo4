@@ -39,7 +39,7 @@ public class TrasladoMedicamento {
         String signo = "+";
         try {
             InitialContext ctx = new InitialContext();
-            DataSource ds = (DataSource) ctx.lookup("java:/Farmacia");
+            DataSource ds = (DataSource) ctx.lookup("java:/Farma");
             conn = ds.getConnection();
             stmt = conn.createStatement();
 
@@ -76,9 +76,9 @@ public class TrasladoMedicamento {
                 sql = "select idMedicamento as id from Medicamento where Codigo = '" + cod + "';";
                 rs = stmt.executeQuery(sql);
                 String idM = "";
-                if (result != null) {
-                    while (result.next()) {
-                        idM = result.getString("id");
+                if (rs != null) {
+                    while (rs.next()) {
+                        idM = rs.getString("id");
                     }
                 }
                 sql1 = "insert into ListaMedicamentos(Medicamento, Solicitud, Cantidad) values(" + idM + "," + idS + "," + cant + ");";

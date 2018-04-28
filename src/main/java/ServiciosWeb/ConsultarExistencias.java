@@ -45,7 +45,7 @@ public class ConsultarExistencias {
             String codigo = (String) obj.get("Codigo");
             
             
-            sql = "select Existencias from Medicamento where Codigo ='"+Codigo+"';";
+            sql = "select Existencias from Medicamento where Codigo ='"+codigo+"';";
             String cant = "";
             rs = stmt.executeQuery(sql);
             if(rs != null){
