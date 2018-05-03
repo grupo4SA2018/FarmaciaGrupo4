@@ -99,7 +99,7 @@ public class TrasladoMedicamento {
         } catch (NumberFormatException | SQLException | NamingException se) {
             //Handle errors for JDBC
             //return "" + se;
-            return "{\"error\"}";
+            return "{\"Exito\":\"0\",\"Error\":\""+se.getMessage()+"\"}";
 
         } finally {
             //finally block used to close resources
@@ -111,9 +111,9 @@ public class TrasladoMedicamento {
             } //end finally try
         }
         if (retorno == true) {
-            return "{\"exito\"}";
+            return "{\"Exito\":\"1\"}";
         } else {
-            return "{\"error\"}";
+            return "{\"Exito\":\"0\",\"Exito\":\"\"}";
         }
 
     }
