@@ -158,40 +158,39 @@ public class Despacho {
             if (id_receta.equals("-1")) {
                 sql = "select * from Factura";
                 rs = st.executeQuery(sql);
-                if (rs == null) {
-                    jsonR += "]}";
-                    return rs.getRow() + "";
-                }
+                
                 int cnt = 0;
-
-                while (rs.next()) {
-                    //return "dafsadf";
-                    id_receta = resul1.getString("Receta");
-                    String Fecha = resul1.getString("Fecha");
-                    String DPI = resul1.getString("NIT");
+                while(rs.next()){
+                    if(rs.getString("NIT").equals("C/F")){
+                        break;
+                    }
+                    
+                    id_receta = rs.getString("Receta");
+                    String Fecha = rs.getString("Fecha");
+                    String DPI = rs.getString("NIT");
                     
                     sql = "select d.cantidad cantidad, m.Nombre nombre, m.idMedicamento id from Factura f";
                     sql += " inner join DETALLE d on f.idFactura = d.Factura inner join Medicamento m";
                     sql += " on m.idMedicamento = d.Medicamento where f.Receta = " + id_receta;
-
+                    
                     resul = stmt.executeQuery(sql);
 
                     if (resul == null) {
                         jsonR += "]}";
                         return jsonR;
                     }
-
+                    
                     if (cnt > 0) {
                         jsonR += ",";
                     };
                     cnt++;
-
+                    
                     jsonR += "{\"Receta\":\"" + id_receta + "\",";
                     jsonR += "\"Fecha\":\"" + Fecha + "\",";
                     jsonR += "\"DPI\":\"" + DPI + "\",";
 
                     String medicamentos = "\"Medicamentos\":[";
-
+                    
                     int cont = 0;
                     while (resul.next()) {
                         //return "dfaf";    
@@ -214,12 +213,11 @@ public class Despacho {
                     }
 
                     medicamentos += "]";
-
                     jsonR += medicamentos;
 
                     jsonR += "}";
-
                 }
+                
             } else {
                 sql = "select NIT, Fecha from Factura where Receta = " + id_receta;
                 String Fecha = "";
@@ -250,6 +248,10 @@ public class Despacho {
                 jsonR += "{\"Receta\":\"" + id_receta + "\",";
                 jsonR += "\"Fecha\":\"" + Fecha + "\",";
                 jsonR += "\"DPI\":\"" + DPI + "\",";
+                
+                if(DPI.equals(null) || DPI.equals("")){
+                    return "{ \"Despacho\":[] }";
+                }
 
                 String medicamentos = "\"Medicamentos\":[";
 
